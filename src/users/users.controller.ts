@@ -9,17 +9,21 @@ export class UsersController {
 
   @Post('/')
   async createUser(@Body() createUserDto: CreateUserDto, @Res() res) {
+    console.log(`Creating an user`);
     const user = await this.usersService.findByEmail(createUserDto.email);
 
     if (user) {
+      console.error(`This UserEmail already exists`);
       return res.status(400).send({ message: 'User already exists' });
     }
 
     try {
       this.usersService.create(createUserDto);
-      res.sendStatus(201);
-      return;
+      return res.sendStatus(201);
     } catch (error) {
+      console.error(
+        `Got an error trying to creating new user: ${error.message}`,
+      );
       res.sendStatus(500);
     }
   }

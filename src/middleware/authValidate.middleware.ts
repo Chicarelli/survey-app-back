@@ -5,6 +5,10 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class AuthValidateMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    console.log(
+      `AuthValidateMiddleware verifying access token for private route`,
+    );
+
     const authentication = req.headers && req.headers?.authorization;
     const token = authentication.split(' ')[1];
 
@@ -16,6 +20,7 @@ export class AuthValidateMiddleware implements NestMiddleware {
       req.headers.username = result?.name;
       req.headers.email = result?.email;
 
+      console.log(`Validated user: ${result.email}`);
       next();
     } catch (error) {
       console.error(

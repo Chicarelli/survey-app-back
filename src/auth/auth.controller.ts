@@ -13,6 +13,7 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() loginDto: LoginDto, @Res() res) {
+    console.log(`Trying to loggin with email: ${loginDto.email}`);
     const user = await this.usersService.findByEmail(loginDto.email);
 
     if (!user) {
@@ -28,6 +29,7 @@ export class AuthController {
     }
   }
 
+  //Route to test middleware. After, it could be an route to change password and w/e
   @Get('/test')
   async test(@Headers() headers) {
     return 'test';
