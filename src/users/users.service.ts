@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { compare, genSalt, hash } from 'bcrypt';
+import { genSalt, hash } from 'bcrypt';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/CreateUserDto';
-import { LoginDto } from './dto/LoginDto';
 import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
@@ -34,16 +33,5 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email: email });
-  }
-
-  async login(login: LoginDto, user: User) {
-    const hashedPassword = user.password;
-    const isMatch = await compare(login.password, hashedPassword);
-
-    if (!isMatch) {
-      throw new Error('Wrong credentials');
-    }
-
-    return isMatch;
   }
 }

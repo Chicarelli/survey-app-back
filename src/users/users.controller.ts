@@ -1,8 +1,7 @@
-import { Controller, Body, Post } from '@nestjs/common';
+import { Controller, Body, Post, Get, Headers } from '@nestjs/common';
 import { CreateUserDto } from './dto/CreateUserDto';
 import { UsersService } from './users.service';
 import { Res } from '@nestjs/common/decorators';
-import { LoginDto } from './dto/LoginDto';
 
 @Controller('users')
 export class UsersController {
@@ -22,23 +21,6 @@ export class UsersController {
       return;
     } catch (error) {
       res.sendStatus(500);
-    }
-  }
-
-  @Post('/login')
-  async login(@Body() loginDto: LoginDto, @Res() res) {
-    const user = await this.usersService.findByEmail(loginDto.email);
-
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
-    }
-
-    try {
-      const result = await this.usersService.login(loginDto, user);
-
-      res.status(200).send(result);
-    } catch (error) {
-      res.status(400).send({ message: error.message });
     }
   }
 }
