@@ -9,6 +9,12 @@ export class Survey {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
   owner: User;
 
+  @Prop({ default: true })
+  isPublic: boolean;
+
+  @Prop({ default: true })
+  isUniqueAnswer: boolean;
+
   @Prop()
   title: string;
 
@@ -18,14 +24,8 @@ export class Survey {
   @Prop()
   finalDate: string;
 
-  @Prop({ default: true })
-  publicView: boolean;
-
-  @Prop({ default: true })
-  publicAnswer: boolean;
-
-  @Prop({ default: 1 })
-  maxAnswer: number;
+  @Prop()
+  limitAnswer: number;
 
   @Prop({ default: [] })
   questions: Question[];
@@ -36,4 +36,5 @@ export const SurveySchema = SchemaFactory.createForClass(Survey);
 interface Question {
   question: string;
   answers: string[];
+  required: boolean;
 }
