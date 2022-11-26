@@ -13,7 +13,7 @@ export class UsersService {
     console.log(`Creating new user with email: ${createUserDto.email}`);
     const createdUser = new this.userModel(createUserDto);
     await this.createPassword(createdUser);
-    createdUser.save();
+    await createdUser.save();
     console.log(`Created user`);
   }
 

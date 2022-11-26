@@ -34,7 +34,12 @@ export class SurveyController {
     }
 
     try {
-      this.surveyService.createSurvey(createSurveyDto, user);
+      const createdSurvey = await this.surveyService.createSurvey(
+        createSurveyDto,
+        user,
+      );
+
+      return res.status(201).send(createdSurvey);
     } catch (error) {
       res.status(400).send({ message: error.message });
     }

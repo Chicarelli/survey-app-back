@@ -29,6 +29,26 @@ export class Survey {
 
   @Prop({ default: [] })
   questions: Question[];
+
+  constructor({
+    owner,
+    isPublic,
+    isUniqueAnswer,
+    title,
+    description,
+    finalDate,
+    limitAnswer,
+    questions,
+  }) {
+    this.owner = owner;
+    this.isPublic = isPublic;
+    this.isUniqueAnswer = isUniqueAnswer;
+    this.title = title;
+    this.description = description;
+    this.finalDate = finalDate;
+    this.limitAnswer = limitAnswer;
+    this.questions = questions;
+  }
 }
 
 export const SurveySchema = SchemaFactory.createForClass(Survey);
