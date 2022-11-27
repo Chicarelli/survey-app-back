@@ -16,11 +16,11 @@ export class Answer {
   @Prop()
   connectionId: string;
 
-  @Prop()
-  answer: Answer[];
+  @Prop({ default: [] })
+  answer: AnswerProp[];
 }
 
-export interface Answer {
+export interface AnswerProp {
   question_key: number;
   option_key: number;
   option_text: string;
