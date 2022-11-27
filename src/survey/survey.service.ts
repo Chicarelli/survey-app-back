@@ -21,6 +21,7 @@ export class SurveyService {
     const createdSurvey = new this.surveyModel({
       owner: user,
       ...createSurveyDto,
+      finalDate: this.treatSurveyFinalDate(createSurveyDto.finalDate),
     });
 
     console.log(`Saving survey`);
@@ -80,5 +81,15 @@ export class SurveyService {
         throw new Error('Questões precisam ter pelo menos duas alternativas');
       }
     });
+  }
+
+  private treatSurveyFinalDate(finalDate: string): string {
+    const date = new Date(finalDate);
+
+    if (isNaN(Number(date)) || !finalDate) {
+      return '';
+    }
+
+    return date.toString();
   }
 }
