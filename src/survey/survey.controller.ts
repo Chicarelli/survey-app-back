@@ -45,14 +45,11 @@ export class SurveyController {
     @Req() req,
     @Res() res,
   ) {
-    console.log(`Creating answer for survey ${surveyId}`);
-    let user = null;
     const connectionId = req.ip;
 
-    if (req?.headers?.email) {
-      console.log(`userconnected: ${req.headers.email}`);
-      user = this.usersService.findByEmail(req?.headers?.email);
-    }
+    const user = req?.headers?.email
+      ? await this.usersService.findByEmail(req.headers.email)
+      : null;
 
     try {
       const result = await this.surveyService.createAnswer(

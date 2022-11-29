@@ -39,24 +39,11 @@ export class SurveyService {
     user: User | null,
     connectionId: string,
   ) {
-    const survey = await this.surveyModel.findById(surveyId);
-    console.log('founded survey: ', survey);
+    console.log(`Creating a new answer to survey: ${surveyId}`);
 
-    if (!survey) {
-      throw new Error('Pesquisa inválida');
-    }
+    const survey = await this.findSurveyByIdOrThrowError(surveyId);
 
-    const userAlreadyAnswered = await this.userAlreadyAnswered(
-      connectionId,
-      user,
-    );
-    console.log(
-      `checking if user already answered this survey: ${userAlreadyAnswered}`,
-    );
-
-    if (userAlreadyAnswered && survey.isUniqueAnswer) {
-      throw new Error('Pesquisa disponível para resposta apenas 1 vez');
-    }
+    await this.valideUserToAnswer(survey, user, connectionId);
 
     this.checkAnswers(survey, createAnswerDto.answers);
 
@@ -64,6 +51,8 @@ export class SurveyService {
     answer.answer = createAnswerDto.answers;
     answer.connectionId = connectionId;
     answer.owner = user;
+
+    console.log(`Registering answer ${answer.id} of survey ${surveyId}`);
 
     await answer.save();
 
@@ -166,5 +155,35 @@ export class SurveyService {
     }
 
     return false;
+  }
+
+  private async findSurveyByIdOrThrowError(surveyId: string): Promise<Survey> {
+    console.log(`Trying to find survey: ${surveyId}`);
+    const survey = await this.surveyModel.findById(surveyId);
+
+    if (!survey) {
+      throw new Error('Pesquisa não encontrada');
+    }
+
+    return survey;
+  }
+
+  private async valideUserToAnswer(
+    survey: Survey,
+    user: User | null,
+    connectionId: string,
+  ): Promise<void> {
+    console.log(
+      `Validating if the survey ${survey.title} is valid to this user`,
+    );
+
+    const userAlreadyAnswered = await this.userAlreadyAnswered(
+      connectionId,
+      user,
+    );
+
+    if (userAlreadyAnswered && survey.isUniqueAnswer) {
+      throw new Error('Usuário já respondeu essa pesquisa');
+    }
   }
 }
