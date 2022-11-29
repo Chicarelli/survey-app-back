@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/users/schemas/user.schema';
 import { Model } from 'mongoose';
-import { CreateSurveyDto, Question } from './dto/createSurvey.dto';
+import { CreateSurveyDto } from './dto/createSurvey.dto';
 import { Survey, SurveyDocument } from './schemas/survey.schema';
 import { CreateAnswerDto } from './dto/createAnswer.dto';
 import { Answer, AnswerDocument, AnswerProp } from './schemas/answer.schema';
