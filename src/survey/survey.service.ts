@@ -30,7 +30,7 @@ export class SurveyService {
   }
 
   async createAnswer(
-    surveyId,
+    surveyId: string,
     createAnswerDto: CreateAnswerDto,
     user: User | null,
     connectionId: string,

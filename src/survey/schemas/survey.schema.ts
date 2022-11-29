@@ -56,6 +56,24 @@ export class Survey {
     this.questions = questions;
   }
 
+  public setFinalDate(finalDate): void {
+    const date = new Date(finalDate);
+
+    if (isNaN(Number(date)) || !finalDate) {
+      this.finalDate = null;
+    }
+
+    this.finalDate = date.toString();
+  }
+
+  public setTitle(title: string) {
+    if (title.replace(/\s/g, '').length === 0) {
+      throw new Error('Nome inválido');
+    }
+
+    this.title = title;
+  }
+
   private isQuestionsValid(questions: Question[]): void {
     console.log(`Checking if it is a valid survey`);
     this.checkIfThereIsMinimumQuestions(questions.length);
@@ -99,24 +117,6 @@ export class Survey {
         throw new Error('Questões precisam ter pelo menos duas alternativas');
       }
     });
-  }
-
-  public setFinalDate(finalDate): void {
-    const date = new Date(finalDate);
-
-    if (isNaN(Number(date)) || !finalDate) {
-      this.finalDate = null;
-    }
-
-    this.finalDate = date.toString();
-  }
-
-  public setTitle(title: string) {
-    if (title.replace(/\s/g, '').length === 0) {
-      throw new Error('Nome inválido');
-    }
-
-    this.title = title;
   }
 }
 
