@@ -29,6 +29,12 @@ export class SurveyService {
     return createdSurvey;
   }
 
+  async getAllSurveyFromUser(userId: string): Promise<Array<Survey>> {
+    console.log(`Trying to get all surveys from users: ${userId}`);
+    const usersList = await this.surveyModel.find({ owner: userId });
+    return usersList;
+  }
+
   async createAnswer(
     surveyId: string,
     createAnswerDto: CreateAnswerDto,
@@ -120,3 +126,8 @@ export class SurveyService {
     }
   }
 }
+
+/**
+ * TODO
+ * [ ] - Passar as lógicas da criação de uma resposta para o domain.
+ */

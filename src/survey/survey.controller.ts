@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { Req, Res } from '@nestjs/common/decorators';
 import { User } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
@@ -35,6 +35,16 @@ export class SurveyController {
       return res.status(201).send(createdSurvey);
     } catch (error) {
       res.status(400).send({ message: error.message });
+    }
+  }
+
+  @Get('/:userId')
+  async getAll(@Param('userId') userId: string, @Req() req, @Res() res) {
+    try {
+      const result = await this.surveyService.getAllSurveyFromUser(userId);
+      return res.status(200).send({ surveys: result });
+    } catch (error) {
+      return res.status(400).send({ message: error.message });
     }
   }
 
