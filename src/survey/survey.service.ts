@@ -35,6 +35,13 @@ export class SurveyService {
     return usersList;
   }
 
+  async getSurveyById(surveyId: string): Promise<Survey> {
+    console.log(`Trying to find surveyById: ${surveyId}`);
+    const survey = await this.surveyModel.findById(surveyId);
+
+    return survey;
+  }
+
   async createAnswer(
     surveyId: string,
     createAnswerDto: CreateAnswerDto,

@@ -38,15 +38,16 @@ export class SurveyController {
     }
   }
 
-  @Get('/:userId')
-  async getAll(@Param('userId') userId: string, @Req() req, @Res() res) {
-    try {
-      const result = await this.surveyService.getAllSurveyFromUser(userId);
-      return res.status(200).send({ surveys: result });
-    } catch (error) {
-      return res.status(400).send({ message: error.message });
-    }
-  }
+  // //TODO Refazer esta rota para aceitar userID como params e ser um getAllSurvey.
+  // @Get('/:userId')
+  // async getAll(@Param('userId') userId: string, @Req() req, @Res() res) {
+  //   try {
+  //     const result = await this.surveyService.getAllSurveyFromUser(userId);
+  //     return res.status(200).send({ surveys: result });
+  //   } catch (error) {
+  //     return res.status(400).send({ message: error.message });
+  //   }
+  // }
 
   @Post('/:surveyId/answer')
   async createAnswer(
@@ -72,5 +73,18 @@ export class SurveyController {
     } catch (error) {
       return res.status(404).send({ message: error.message });
     }
+  }
+
+  @Get('/:surveyId')
+  async getSurveyById(
+    @Param('surveyId') surveyId: string,
+    @Req() req,
+    @Res() res,
+  ) {
+    const result = await this.surveyService.getSurveyById(surveyId);
+
+    return result
+      ? res.status(200).send({ survey: result })
+      : res.status(404).send({ message: 'Pesquisa não encontrada' });
   }
 }
