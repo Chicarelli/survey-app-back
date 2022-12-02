@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { User } from 'src/users/schemas/user.schema';
+import { CreateAnswerDto } from '../dto/createAnswer.dto';
 import { Survey } from './survey.schema';
 
 export type AnswerDocument = HydratedDocument<Answer>;
@@ -18,6 +19,28 @@ export class Answer {
 
   @Prop({ default: [] })
   answer: AnswerProp[];
+
+  constructor(user: User, survey: Survey, { ...props }: CreateAnswerDto) {
+    this.checkAnswers(survey, props.answers);
+    this.answer = props.answers;
+    this.owner = user;
+  }
+
+  private checkAnswers(survey: Survey, answers: AnswerProp[]): void {
+    const questions = survey.questions;
+
+    console.log(`checking if the answeres are correct`);
+
+    questions.forEach((question, index) => {
+      const questionAnswer: AnswerProp = answers.find((answer) => {
+        return Number(answer.question_key) == index;
+      });
+
+      if (question.required && !!questionAnswer.option_key) {
+        throw new Error('Existem perguntas obrigatórios não respondidas');
+      }
+    });
+  }
 }
 
 export interface AnswerProp {

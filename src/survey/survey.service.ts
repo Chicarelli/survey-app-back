@@ -47,34 +47,14 @@ export class SurveyService {
 
     await this.valideUserToAnswer(survey, user, connectionId);
 
-    this.checkAnswers(survey, createAnswerDto.answers);
-
-    const answer = new this.answerModel();
-    answer.answer = createAnswerDto.answers;
+    const answer = new this.answerModel(user, survey, createAnswerDto);
     answer.connectionId = connectionId;
-    answer.owner = user;
 
     console.log(`Registering answer ${answer.id} of survey ${surveyId}`);
 
     await answer.save();
 
     return answer;
-  }
-
-  private checkAnswers(survey: Survey, answers: AnswerProp[]): void {
-    const questions = survey.questions;
-
-    console.log(`checking if the answeres are correct`);
-
-    questions.forEach((question, index) => {
-      const questionAnswer: AnswerProp = answers.find((answer) => {
-        return Number(answer.question_key) == index;
-      });
-
-      if (question.required && !!questionAnswer.option_key) {
-        throw new Error('Existem perguntas obrigatórios não respondidas');
-      }
-    });
   }
 
   private async userAlreadyAnswered(
@@ -126,8 +106,3 @@ export class SurveyService {
     }
   }
 }
-
-/**
- * TODO
- * [ ] - Passar as lógicas da criação de uma resposta para o domain.
- */
