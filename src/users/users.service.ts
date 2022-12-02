@@ -39,4 +39,10 @@ export class UsersService {
     console.log(`Trying to find an user by email: ${email}`);
     return this.userModel.findOne({ email: email });
   }
+
+  async findById(userId: string): Promise<User> {
+    console.log(`Trying to find user by Id: ${userId}`);
+
+    return this.userModel.findById({ _id: userId });
+  }
 }
