@@ -19,10 +19,12 @@ export class SurveyService {
     user: User,
   ): Promise<Survey> {
     console.log(`Creating survey ${createSurveyDto.title} from ${user.email}`);
-    const createdSurvey = new this.surveyModel({
-      owner: user,
-      ...createSurveyDto,
-    });
+    const createdSurvey = new this.surveyModel(
+      new Survey({
+        owner: user,
+        ...createSurveyDto,
+      }),
+    );
 
     await createdSurvey.save();
 
@@ -54,7 +56,9 @@ export class SurveyService {
 
     await this.valideUserToAnswer(survey, user, connectionId);
 
-    const answer = new this.answerModel(user, survey, createAnswerDto);
+    const answer = new this.answerModel(
+      new Answer(user, survey, createAnswerDto),
+    );
     answer.connectionId = connectionId;
 
     console.log(`Registering answer ${answer.id} of survey ${surveyId}`);
@@ -79,6 +83,19 @@ export class SurveyService {
 
     console.log(`FindSurveys: ${result.length}`);
     return result;
+  }
+
+  async getAllAnswersFrom(
+    surveyId,
+    skip: number,
+    perPage: number,
+  ): Promise<Array<Answer>> {
+    console.log(`Trying to get all answers from survey: ${surveyId}`);
+
+    return await this.answerModel
+      .find({ survey: surveyId })
+      .skip(skip)
+      .limit(perPage);
   }
 
   private async userAlreadyAnswered(

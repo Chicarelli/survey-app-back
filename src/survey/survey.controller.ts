@@ -113,4 +113,33 @@ export class SurveyController {
       ? res.status(200).send({ survey: result })
       : res.status(404).send({ message: 'Pesquisa não encontrada' });
   }
+
+  @Get(':surveyId/answers')
+  async getSurveyAnswers(
+    @Param('surveyId') surveyId: string,
+    @Res() res,
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 20,
+  ) {
+    try {
+      const survey = await this.surveyService.getSurveyById(surveyId);
+
+      if (!survey) {
+        return res.status(404).send({ message: 'Pesquisa não encontrada' });
+      }
+
+      const skipNumber = perPage * (page - 1);
+      const answers = await this.surveyService.getAllAnswersFrom(
+        surveyId,
+        skipNumber,
+        perPage,
+      );
+
+      return res.status(200).send({ answers });
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ message: 'Erro na busca das respostas desta pesquisa' });
+    }
+  }
 }
