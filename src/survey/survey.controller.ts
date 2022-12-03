@@ -109,6 +109,18 @@ export class SurveyController {
   ) {
     const result = await this.surveyService.getSurveyById(surveyId);
 
+    if (!result.isPublic) {
+      const requestedUser = await this.usersService.findByEmail(
+        req.headers.email,
+      );
+
+      if (!requestedUser) {
+        return res.status(401).send({
+          message: 'Usuário deve estar logado para acessar esta pesquisa',
+        });
+      }
+    }
+
     return result
       ? res.status(200).send({ survey: result })
       : res.status(404).send({ message: 'Pesquisa não encontrada' });

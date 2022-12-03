@@ -31,9 +31,15 @@ export class SurveyModule implements NestModule {
       .apply(GetUserMiddleware, AuthValidateMiddleware)
       .forRoutes({ path: 'survey', method: RequestMethod.POST });
 
-    consumer.apply(GetUserMiddleware).forRoutes({
-      path: 'survey/:surveyId/answer',
-      method: RequestMethod.POST,
-    });
+    consumer.apply(GetUserMiddleware).forRoutes(
+      {
+        path: 'survey/:surveyId/answer',
+        method: RequestMethod.POST,
+      },
+      {
+        path: 'survey/:surveyId',
+        method: RequestMethod.GET,
+      },
+    );
   }
 }
