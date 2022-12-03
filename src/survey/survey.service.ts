@@ -64,6 +64,23 @@ export class SurveyService {
     return answer;
   }
 
+  async findAllSurvey(
+    skip: number,
+    perPage: number,
+    userId: string | null,
+  ): Promise<Array<Survey>> {
+    const searchObj = userId ? { owner: userId } : {};
+    console.log(
+      `Trying to find surveys: Skip: ${skip}, perPage: ${perPage} from userId: ${userId}, and obj: `,
+      searchObj,
+    );
+
+    const result = await this.surveyModel.find().skip(skip).limit(perPage);
+
+    console.log(`FindSurveys: ${result.length}`);
+    return result;
+  }
+
   private async userAlreadyAnswered(
     connectionId: string,
     user: User,
