@@ -46,6 +46,8 @@ export class SurveyController {
     @Req() req,
     @Res() res,
   ) {
+    const isLoggedUser = Boolean(req.headers?.email);
+
     try {
       if (userId) {
         const user = await this.usersService.findById(userId);
@@ -67,6 +69,7 @@ export class SurveyController {
         skipNumber,
         perPage,
         userId,
+        isLoggedUser,
       );
 
       return res.status(200).send({ surveys: result });

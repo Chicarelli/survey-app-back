@@ -72,14 +72,24 @@ export class SurveyService {
     skip: number,
     perPage: number,
     userId: string | null,
+    isLoggedUser: boolean,
   ): Promise<Array<Survey>> {
-    const searchObj = userId ? { owner: userId } : {};
+    const searchObj: any = userId ? { owner: userId } : {};
+
+    if (!isLoggedUser) {
+      console.log(`requestedUser is not a loggedUser`);
+      searchObj.isPublic = true;
+    }
+
     console.log(
       `Trying to find surveys: Skip: ${skip}, perPage: ${perPage} from userId: ${userId}, and obj: `,
       searchObj,
     );
 
-    const result = await this.surveyModel.find().skip(skip).limit(perPage);
+    const result = await this.surveyModel
+      .find(searchObj)
+      .skip(skip)
+      .limit(perPage);
 
     console.log(`FindSurveys: ${result.length}`);
     return result;

@@ -40,6 +40,10 @@ export class SurveyModule implements NestModule {
         path: 'survey/:surveyId',
         method: RequestMethod.GET,
       },
+      {
+        path: 'survey',
+        method: RequestMethod.GET,
+      },
     );
   }
 }
