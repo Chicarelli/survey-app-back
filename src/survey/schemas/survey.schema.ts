@@ -6,6 +6,8 @@ export type SurveyDocument = HydratedDocument<Survey>;
 
 @Schema()
 export class Survey {
+  _id: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
   owner: User;
 

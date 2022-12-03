@@ -24,6 +24,7 @@ export class Answer {
     this.checkAnswers(survey, props.answers);
     this.answer = props.answers;
     this.owner = user;
+    this.survey = survey;
   }
 
   private checkAnswers(survey: Survey, answers: AnswerProp[]): void {
