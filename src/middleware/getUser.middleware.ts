@@ -8,7 +8,7 @@ export class GetUserMiddleware implements NestMiddleware {
     console.log(`Get User Middleware`);
 
     const authentication = req.headers && req.headers?.authorization;
-    const token = authentication.split(' ')[1];
+    const token = authentication?.split(' ')[1] || '';
 
     try {
       const result = verify(token, process.env.SECRET_KEY_JWT, {

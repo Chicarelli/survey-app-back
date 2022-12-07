@@ -157,4 +157,26 @@ export class SurveyController {
         .send({ message: 'Erro na busca das respostas desta pesquisa' });
     }
   }
+
+  @Get(':surveyId/report')
+  async getSurveyReport(
+    @Param('surveyId') surveyId: string,
+    @Res() res,
+    @Req() req,
+  ) {
+    try {
+      const user = await this.usersService.findByEmail(req.headers.email);
+
+      const surveyReport = await this.surveyService.getSurveyReport(
+        user,
+        surveyId,
+      );
+
+      return res.status(200).send(surveyReport);
+    } catch (error) {
+      return res.status(400).send({
+        message: 'Não foi possível buscar o relatório desta pesquisa',
+      });
+    }
+  }
 }

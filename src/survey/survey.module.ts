@@ -27,9 +27,13 @@ import { Answer, AnswerSchema } from './schemas/answer.schema';
 })
 export class SurveyModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(GetUserMiddleware, AuthValidateMiddleware)
-      .forRoutes({ path: 'survey', method: RequestMethod.POST });
+    consumer.apply(GetUserMiddleware, AuthValidateMiddleware).forRoutes(
+      { path: 'survey', method: RequestMethod.POST },
+      {
+        path: 'survey/:surveyId/report',
+        method: RequestMethod.GET,
+      },
+    );
 
     consumer.apply(GetUserMiddleware).forRoutes(
       {

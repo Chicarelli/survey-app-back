@@ -108,6 +108,21 @@ export class SurveyService {
       .limit(perPage);
   }
 
+  async getSurveyReport(user: User, surveyId: string): Promise<any> {
+    const survey = await this.getSurveyById(surveyId);
+
+    if (survey.owner.toString() != user._id) {
+      throw new Error(
+        'Este usuário não tem permissão para ver o relatório desta pesquisa',
+      );
+    }
+
+    const allSurveys = await this.answerModel.find({ survey });
+
+    //TODO: Gerar relatório baseado em todas as respostas
+    return allSurveys;
+  }
+
   private async userAlreadyAnswered(
     connectionId: string,
     user: User,
