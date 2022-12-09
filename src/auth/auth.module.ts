@@ -1,10 +1,10 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from 'src/users/schemas/user.schema';
-import { AuthValidateMiddleware } from 'src/middleware/authValidate.middleware';
+import { User, UserSchema } from '../users/schemas/user.schema';
+import { AuthValidateMiddleware } from '../middleware/authValidate.middleware';
 
 @Module({
   controllers: [AuthController],

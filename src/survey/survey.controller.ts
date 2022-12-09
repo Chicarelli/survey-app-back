@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { Query, Req, Res } from '@nestjs/common/decorators';
-import { User } from 'src/users/schemas/user.schema';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../users/schemas/user.schema';
+import { UsersService } from '../users/users.service';
 import { CreateAnswerDto } from './dto/createAnswer.dto';
 import { CreateSurveyDto } from './dto/createSurvey.dto';
 import { SurveyService } from './survey.service';

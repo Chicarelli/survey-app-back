@@ -7,10 +7,10 @@ import {
 import { SurveyService } from './survey.service';
 import { SurveyController } from './survey.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from 'src/users/schemas/user.schema';
+import { User, UserSchema } from '../users/schemas/user.schema';
 import { Survey, SurveySchema } from './schemas/survey.schema';
 import { UsersService } from 'src/users/users.service';
-import { AuthValidateMiddleware } from 'src/middleware/authValidate.middleware';
+import { AuthValidateMiddleware } from '../middleware/authValidate.middleware';
 import { GetUserMiddleware } from 'src/middleware/getUser.middleware';
 import { Answer, AnswerSchema } from './schemas/answer.schema';
 
