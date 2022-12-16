@@ -96,7 +96,7 @@ export class SurveyService {
   }
 
   async getAllAnswersFrom(
-    surveyId,
+    surveyId: string,
     skip: number,
     perPage: number,
   ): Promise<Array<Answer>> {
