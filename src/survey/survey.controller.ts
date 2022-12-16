@@ -34,7 +34,7 @@ export class SurveyController {
 
       return res.status(201).send(createdSurvey);
     } catch (error) {
-      res.status(400).send({ message: error.message });
+      return res.status(400).send({ message: error.message });
     }
   }
 
