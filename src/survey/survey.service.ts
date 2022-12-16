@@ -117,10 +117,31 @@ export class SurveyService {
       );
     }
 
-    const allSurveys = await this.answerModel.find({ survey });
+    const allAnswer = await this.answerModel.find({ survey });
 
-    //TODO: Gerar relatório baseado em todas as respostas
-    return allSurveys;
+    const report = survey.questions.map((question, index) => {
+      const answersOption = [];
+
+      const allAnswersOfThisQuestion = allAnswer.map((answer) =>
+        answer.answer.find((answer) => answer.question_key === index),
+      );
+
+      allAnswersOfThisQuestion.forEach((answer) =>
+        answersOption.push(answer.option_key),
+      );
+
+      return {
+        question: question.question,
+        answers: question.answers.map((answer, index) => ({
+          option: answer,
+          result: `${
+            answersOption.filter((answer) => answer === index).length
+          } votos`,
+        })),
+      };
+    });
+
+    return report;
   }
 
   private async userAlreadyAnswered(
