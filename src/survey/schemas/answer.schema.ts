@@ -37,8 +37,12 @@ export class Answer {
         return Number(answer.question_key) == index;
       });
 
-      if (question.required && !!questionAnswer.option_key) {
+      if (question.required && !questionAnswer) {
         throw new Error('Existem perguntas obrigatórios não respondidas');
+      }
+
+      if (question.answers.length <= questionAnswer.option_key) {
+        throw new Error('Resposta com opção inválida');
       }
     });
   }
