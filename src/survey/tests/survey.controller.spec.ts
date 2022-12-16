@@ -1,8 +1,10 @@
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
+import { User } from '../../users/schemas/user.schema';
 import { UsersService } from '../../users/users.service';
 import { CreateSurveyDto } from '../dto/createSurvey.dto';
+import { Survey } from '../schemas/survey.schema';
 import { SurveyController } from '../survey.controller';
 import { SurveyService } from '../survey.service';
 
@@ -55,6 +57,45 @@ describe('SurveyController', () => {
 
       expect(res.statusCode).toEqual(404);
       expect(result).toEqual({ message: 'User not found' });
+    });
+
+    it('should give an error 400 with the throwned message if services failed', async () => {
+      jest.spyOn(service, 'createSurvey').mockImplementation(() => {
+        throw new Error('Error message');
+      });
+
+      jest
+        .spyOn(userService, 'findByEmail')
+        .mockImplementation(() => Promise.resolve({} as User));
+
+      const result = await controller.createSurvey(
+        {} as CreateSurveyDto,
+        request,
+        res,
+      );
+
+      expect(res.statusCode).toEqual(400);
+      expect(result).toEqual({ message: 'Error message' });
+    });
+
+    it('should return the createdSurvey object with statusCode 201', async () => {
+      const createdSurvey = {} as Survey;
+
+      jest
+        .spyOn(userService, 'findByEmail')
+        .mockImplementation(() => Promise.resolve({} as User));
+
+      jest
+        .spyOn(service, 'createSurvey')
+        .mockImplementation(() => Promise.resolve(createdSurvey));
+
+      const result = await controller.createSurvey(
+        {} as CreateSurveyDto,
+        request,
+        res,
+      );
+
+      expect(result).toEqual(createdSurvey);
     });
   });
 });
