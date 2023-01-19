@@ -18,7 +18,7 @@ export class UsersController {
     }
 
     try {
-      this.usersService.create(createUserDto);
+      await this.usersService.create(createUserDto);
       return res.sendStatus(201);
     } catch (error) {
       console.error(
